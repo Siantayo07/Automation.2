@@ -1,0 +1,57 @@
+{ describe, it, before, after }  require('selenium-webdriver/testing');
+var chai = require ('chai');
+var should = chai.should()
+const { expect, assert } = require("chai");
+var chaiAsPromised = require("chai-as-promised");
+chai.use(chaiAsPromised);
+var Page = require("../Pages/SubscribePage");
+var page;
+
+describe("Family Subscription", function(){
+    this.timeout(10000);
+
+    before(function (){
+        page = new Page();
+        page.visit("https://subscribe-dev.rescue.co/");
+        page.sleep(100000);
+    });
+
+    // after(function(){
+    //     page.sleep(700000);
+    //     page.quit();
+    // });
+    it("Should navigate to the subscribe website", function(){
+        const message = page.welcomeMessage().then(function (message){
+            expect(message).to.equal("Choos Bla bla bla ");
+            console.log(message);
+        });
+    });
+    it("Should open the form for details", function(){
+        page.sleep(10000);
+        const familyPlan = page.forFamilyPlan();
+        page.driver.getCurrentUrl().then(function (the_vehicles_url) {
+            assert.equal(
+              "https://dev.flaredispatch.com/settings/vehicles",
+              the_vehicles_url
+            );
+          });  
+        
+    });
+    it("Should input the full name", function(){
+        const name = page.fullName();
+        console.log("here 2");
+    });
+    it("Should input the phone number", function(){
+        const phone = page.phoneNumber();
+        console.log("here 3");
+    });
+    it("Should input the email", function(){
+        const email = page.Email();
+    });
+    it("Should navigate to the next page", function(){
+        const nextBtn = page.detailsPageNext();
+        console.log("here 99");
+    });
+
+});
+
